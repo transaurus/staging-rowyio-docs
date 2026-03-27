@@ -1,0 +1,113 @@
+---
+id: overview
+title: Rowy Run
+# sidebar_label: Overview
+slug: /rowy-run
+---
+
+import RowyRunSvg from "../../static/img/rowy-run-logo.svg";
+import Video from "../../src/components/Video.js";
+
+# <RowyRunSvg height={52} /> <span className="visually-hidden">Rowy Run</span>
+
+Rowy Run is group of Cloud Run services that provides backend functionality, such as derivatives, action scripts, webhooks, user management, and easy Cloud Function deployment.
+
+It operates exclusively on your GCP project, so we never have access to any of
+your data. Like the Rowy App, it is Rowy Run is [open source on Github&UpperRightArrow;](https://github.com/rowyio/backend)
+
+## Auto Deployment Rowy Run — ✅ Recommended
+
+We highly recommend that you setup Rowy and Rowy Run using the guided setup process [here](https://rowy.app). This gives you guided deployment process to ensure you are setup correctly as well as provide automatic updates with latest features.
+
+<Video url="https://www.youtube.com/watch?v=gViYdWiHI9I" playsinline controls/>
+
+Once you create an account and setup Rowy, you can install Rowy Run from the project settings page.
+
+![Rowy Run Setup](./assets/rowyrunsetup.png)
+
+## Manual install Rowy Run
+
+:::warning Important note
+
+- Manual install of Rowy Run will not get automatic updates for which we recommend the option above. Also, we do not provide support for manual install of Rowy Run. This option is only recommended if you want to develop and contribute to the Rowy project.
+- Rowy run backend uses telemetry information for bug tracking and to improve the product 
+- Before starting, make sure you have a Google Cloud or Firebase project with
+**Firestore** and **Firebase Authentication** enabled, and upgraded to the
+**Blaze Plan**.
+
+Don’t have a project?
+[Learn how to create one&nbsp;→](../setup/firebase-project.md)
+
+:::
+
+:::note Required software
+- [gcloud CLI](https://cloud.google.com/sdk/docs/install) 363+
+
+:::
+
+1. Enable the Cloud Run Admin API in the
+   [Google Cloud console &UpperRightArrow;](http://console.cloud.google.com/apis/library/run.googleapis.com)  
+   Make sure you have
+   [billing enabled](https://cloud.google.com/billing/docs/how-to/modify-project#confirm_billing_is_enabled_on_a_project)
+   first.
+
+2. Make sure you’ve initialized the gcloud CLI and signed in to the correct
+   account.
+
+   ```bash
+   gcloud init
+   ```
+
+3.  go To [GCP Cloud Console IAM](https://console.cloud.google.com/iam-admin/iam)
+
+   - Add service account `rowy-backend@YOUR_PROJECT_ID.iam.gserviceaccount.com` assign it the following roles: 
+
+```
+logging.viewer // provide access to logs for the frontend
+logging.logWriter // log events such as auditing
+iam.serviceAccountUser //used for cloud function deployment
+artifactregistry.admin //used for cloud function deployment
+cloudbuild.builds.builder //used for cloud function deployment
+actions.Admin //used for cloud function deployment
+cloudfunctions.admin //used for cloud function deployment
+secretmanager.viewer // view secretmanager metadata, such as secret Names for IDE validation
+firebaseauth.admin //used for managing user roles
+datastore.user // access to firestore
+storage.objectAdmin // access to storage
+secretmanager.secretAccessor // access to secrets for actionScripts
+```
+
+   - Add service account `rowy-hooks@YOUR_PROJECT_ID.iam.gserviceaccount.com` assign it the following roles: 
+
+```
+datastore.user // access to firestore
+storage.objectAdmin // access to storage
+secretmanager.secretAccessor // access to secrets for actionScripts
+logging.logWriter // access to cloud logs
+```
+
+4. 
+Deploy cloud run services using your terminal
+```
+gcloud run deploy rowy-backend --image gcr.io/rowy-run/rowy-backend --platform managed --memory 1Gi --allow-unauthenticated --service-account rowy-backend@YOUR_PROJECT_ID.iam.gserviceaccount.com
+gcloud run deploy rowy-hooks --image gcr.io/rowy-run/rowy-hooks --platform managed --memory 256Mi --allow-unauthenticated --service-account rowy-hooks@YOUR_PROJECT_ID.iam.gserviceaccount.com
+```
+:::note Required project Id
+
+  Don't forget to replace "YOUR_PROJECT_ID" field  with your actual firebase project Id.
+
+:::
+
+5.
+Once deployment is completed you should be able to find the service urls printed in the console.logs
+
+Go to firestore console and navigate to `_rowy_/settings` document
+add the following 
+keys 
+```
+rowyRunUrl: YOUR_ROWY_BACKEND SERVICE URL
+rowyRunServices:{
+   backend:YOUR_ROWY_BACKEND SERVICE URL
+   hooks:YOUR_ROWY_HOOKS SERVICE URL
+}
+

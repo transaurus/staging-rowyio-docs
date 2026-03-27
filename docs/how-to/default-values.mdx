@@ -1,0 +1,153 @@
+---
+id: default-values
+title: Set a default value
+slug: /how-to/default-values
+---
+
+import Video from "../../src/components/Video.js";
+
+Default values can be set for any column and will be set whenever a new row is
+added. You can set default values in Column settings.
+
+## Video demo
+
+<Video controls url="https://youtu.be/xl1lL16SXlA" />
+
+## Undefined
+
+By default, the field’s value is `undefined`. This value is ignored by
+Firestore, so the field won’t be set at all in the database.
+
+## Null
+
+Setting the default value as `null` makes it possible to filter rows by empty
+fields.
+
+## Static
+
+Setting a static value will make all new rows have the same value for this field
+by default.
+
+## Dynamic
+
+Setting a dynamic value lets you use JavaScript code to generate a default field
+value.
+
+example:
+
+When user creates an account user document would be created. the document would
+need a default currency based on the user's country . if you have countries
+collection with all the settings available you can do the following:
+
+```typescript
+const defaultValueFn: DefaultValue = ({ row, db }) => {
+  logging.log("dynamicValueFn started");
+  // set default currency of user's account
+  const countryDoc = await db.collection("countries").doc(row.country).get();
+  const currency = countryDoc.get("currency");
+  return currency;
+};
+
+export default defaultValue;
+```
+
+Alternatively you can get the information form an external api to set the
+default value
+
+```typescript
+const defaultValueFn: DefaultValue = ({ row, db }) => {
+  logging.log("dynamicValueFn started");
+  // set default currency of user's account
+  const resp = await fetch(
+    `https://restcountries.com/v3.1/name/${row.country}`
+  );
+  const respData = await resp.json();
+  // get the currency code from the response
+  const currencyCode = Object.keys(respData[0].currencies)[0];
+  const currency = respData[0].currencies[currencyCode];
+  return {
+    code: currencyCode,
+    name: currency.name,
+    symbol: currency.symbol,
+  };
+};
+
+export default defaultValue;
+```
+
+### API
+
+Your code has access to the following parameters and can use the
+[`await` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await).
+
+You can also use npm packages using
+[CommonJS `require` imports](https://nodejs.org/en/knowledge/getting-started/what-is-require/).
+
+| Name      | Type                                                                                                                    | Description                                                                       |
+| --------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `row`     | [<code>Record<string,&nbsp;any></code>](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeystype) | All data in the current row.                                                      |
+| `ref`     | [`DocumentReference`](https://firebase.google.com/docs/reference/node/firebase.firestore.DocumentReference)             | Reference to the corresponding Firestore document of the current row.             |
+| `db`      | [`Firestore`](https://firebase.google.com/docs/reference/node/firebase.firestore.Firestore)                             | Access to the full Cloud Firestore instance to access any collection or document. |
+| `auth`    | [`Auth`](https://firebase.google.com/docs/reference/admin/node/admin.auth.Auth-1)                                       | Access to Firebase Auth via Admin SDK                                             |
+| `storage` | [`Storage`](https://firebase.google.com/docs/reference/admin/node/admin.storage.Storage-1)                              | Access to Firebase Storage via Admin SDK                                          |
+| `rowy`    | [`Rowy`](/reference/rowy)                                                                                               | Access to cloud function metadata secret Manager and storage utilities            |
+
+### Examples
+
+#### Example: Parent document
+
+Use the row `ref` to get a value from the parent document.
+
+```typescript
+const defaultValueFn: DefaultValue = async ({ ref }) => {
+  logging.log("dynamicValueFn started");
+  const parentDoc = await ref.parent.parent.get();
+  return parentDoc.get("FIELD_KEY_HERE");
+};
+
+export default defaultValue;
+```
+
+#### Example: Any document
+
+Use `db` to get any document in your database.
+
+```typescript
+const defaultValueFn: DefaultValue = async ({ row, db }) => {
+  logging.log("dynamicValueFn started");
+  const query = await db
+    .collection("someCollection")
+    .where("aField", "==", row.someKey)
+    .get();
+  return query.docs[0].get("keyName");
+};
+
+export default defaultValue;
+```
+
+#### Example: npm package
+
+Use an npm package to generate a UUID.
+
+```ts
+const defaultValueFn: DefaultValue = ({ row, db }) => {
+  logging.log("dynamicValueFn started");
+  const { v4: uuidv4 } = require("uuid");
+  return uuidv4();
+};
+
+export default defaultValue;
+```
+
+#### Example: reference Data
+
+Store document id in the document, for easy queries
+
+```typescript
+const defaultValueFn: DefaultValue = ({ ref }) => {
+  logging.log("dynamicValueFn started");
+  return ref.id;
+};
+
+export default defaultValue;
+```

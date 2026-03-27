@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkrowy_docs=self.webpackChunkrowy_docs||[]).push([[7495],{9591:e=>{e.exports=JSON.parse('{"title":"How to guide","slug":"/category/how-to-guide","permalink":"/category/how-to-guide","navigation":{"previous":{"title":"Setup","permalink":"/setup/install"},"next":{"title":"Create a workspace","permalink":"/how-to/create-workspace"}}}')}}]);

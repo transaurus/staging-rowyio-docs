@@ -1,0 +1,117 @@
+---
+id: connector
+title: Connector
+slug: /field-types/connector
+---
+import Video from "../../src/components/Video.js";
+
+Connector columns allow you to excute any backend code and return a list of
+options to your user.
+The options could be static list, list of documents from a
+collection, or a list of documents from a query to third party API.
+
+## Video demo
+
+<Video controls url="https://www.youtube.com/watch?v=787a-Ld_sSQ" />
+
+## API
+
+- Connector Function: the function that will be executed to get the list of
+  options.
+- id: unique identifier field key name to be used to track the user's selection
+  of the listed items
+- label: can be field key name or handlebar template to be used to render the
+  label of the listed items
+
+## Examples
+
+#### Basic Example
+
+Following is an example of a connector function that returns a static list of items:
+
+```javascript
+const connector: Connector = async ({ query, row, user }) => {
+  const items = [
+    { id: "a", word: "apple", emoji: "🍎" },
+    { id: "b", word: "banana", emoji: "🍌"},
+    { id: "c", word: "cherry", emoji: "🍒"},
+    // ... etc
+  ];
+  return items.filter((i) =>
+    i.word.toLowerCase().startsWith(query.toLowerCase())
+  );
+};
+
+export default connector;
+```
+
+- ID: `id`
+- Label Formatter: `{{emoji}} {{word}}`
+
+#### Connect to a Firestore Collection
+
+Following is an example of a connector function that connects to a firestore:
+
+```javascript
+const connectorFn: Connector = async ({db,query}) => {
+  const collectionRef = db.collection("users").limit(5); // specify collection to connected & max results
+  const queryField = "fullName"; // firestore field to be filtered by the input text
+  const resultsFormatter = (doc) => ({ id: doc.id, snapshot: doc.data() }); // the shape of the returned data
+  if (query === "") return (await collectionRef.get()).docs.map(resultsFormatter);
+  const end = query.replace(/.$/, (c) => String.fromCharCode(c.charCodeAt(0) + 1));
+  const queryResults = await collectionRef
+    .where(queryField, ">=", query)
+    .where(queryField, "<", end)
+    .get();
+  return queryResults.docs.map(resultsFormatter);
+};
+
+export default connectorFn;
+```
+
+- ID: `id`
+- Label Formatter: `{{fullName}}`
+
+#### Connect to an External API
+
+Following is an example of a connector function that connects to an external **BoardGames Atlas** API:
+
+```javascript
+const connector: Connector = async ({ query, row, user, logging }) => {
+  logging.log("connector started");
+  const response = await fetch(`https://api.boardgameatlas.com/api/search?name=${query}&client_id=JLBr5npPhV`)
+  const {games} = await response.json()
+  return games
+};
+
+export default connector;
+```
+- ID: `handle`
+- Label Formatter: `name`
+
+#### Connecting to your [MeiliSearch](https://meilisearch.com/) Instance
+
+Following is an example of a connector function that connects to your MeiliSearch instance:
+
+```javascript
+const connectorFn: Connector = async ({ query, row, user }) => {
+  const index = "users";
+  const meilisearch = await rowy.secrets.get("meilisearch");
+  const { host, apiKey } = meilisearch;
+  const resp = await fetch(`${host}/indexes/${index}/search`, {
+    body: JSON.stringify({ q: query }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    method: "POST",
+  });
+  const data = await resp.json();
+  return data.hits;
+};
+
+export default connectorFn;
+```
+
+- ID: `id`
+- Label Formatter: `{{firstName}} {{lastName}}`

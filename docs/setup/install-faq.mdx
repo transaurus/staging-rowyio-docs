@@ -1,0 +1,74 @@
+---
+id: install-faq
+title: FAQs
+slug: /setup/install-faq
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Learn more doc
+
+## What does granting access to cloud platform with Google Authentication during setup mean for you?
+
+Rowy is a Google approved app to automate the setup of Firebase project with a guided experience. By giving Rowy this access, you can avoid going back and forth to the cloud console for granting various permissions at config level during setup process. Your data and code stay on your own GCP/Firebase project, Rowy does not store them.
+
+Rowy is [open-source](https://github.com/rowyio/rowy) and can alternatively be self hosted if you do not want to use the guided setup process.
+
+### List of services used by Rowy during setup with the cloud platform access:
+
+- **Creation of a new Firebase project** with a single click or getting the list of your existing Firebase projects to select from.
+- **Enable Firebase and Firestore Storage**, if it is not already turned on. This is for storing any images or files that you will add to you collections.
+- **Enable Firebase Authentication**, if it is not already turned on. Firebase Auth here will be used for authenticating into the Rowy App.
+- **Setup the Firebase rules:**
+    - In the case of a new Firebase project, this is completely automted
+    - For existing Firebase project, Rowy will show you the exact rule snippet that needs to be added. You can do this manually or apply using a single click during onboarding after looking verifying at the rules diff on screen.
+
+Once Rowy setup is complete, you can build and manage your tables, invite your team members with granular access controls. With Firebase Auth, only users with specific roles as per the Firestore rules will be able to access the data. Therefore you have full ability to control access permissions at table as well as field level.
+
+## What would using Rowy cost me?
+
+You can use Rowy in two modes. Rowy Base and Rowy Pro.
+
+Rowy Base is the free tier and Rowy Pro Team is the paid tier offereing advanced features. Detailed breakdown of the featues and pricing is available [here](https://www.rowy.io/pricing).
+
+## Rowy Base - Free
+
+- A fully free and open-source hosted version of the Rowy App
+- Get access to the core features: CMS for one Firestore project. Ability to import and export data in bulk - csv, tsv, json formats Automate tasks and workflows with cloud functions (unlocked by deploying of Rowy Run).
+    
+   ### **Rowy Cost**
+    
+    Under Rowy Base, you will not incur any charge from Rowy
+
+   ### **Rowy Base - GCP Cost**
+    
+    - Rowy is connected to your own Firebase/GCP project and is 100% serverless, which means theres no ongoing server cost on GCP. 
+    - You can use Rowy's CMS without turning on billing on your GCP project and you only need to turn it on if you want to use Rowy with cloud functions. 
+    - Note the billing referred here is on your own GCP project and not Rowy. <b>Infact, you can build unlimited cloud functions on Rowy, even on the free base tier. </b>This is driven by our core vision to enable you to build products without limitations and to be aligned with our users in our pricing. 
+
+    <b>Pricing Calculator</b>: With Rowy, you are mainly using Firestore, cloud functions and cloud run. GCP’s free tier is quite generous with $300 in credits for all Firebase projects and if you are a startup you get up-to [$100K in credits](https://cloud.google.com/startup).
+    - Table below details the cost breakdown by main usecases of Rowy. You can also use Google Cloud [price calculator](https://cloud.google.com/products/calculator) to further analysis your long term costs depending on how heavy your usage will be.
+    - If you use Firestore, Cloud Storage (Images, File columns) then it is CMS usecase
+    - If you use automation tasks (derivatives, cloud functions) with Cloud Functions, Cloud Run - then it is the Workflows usecase 
+    
+        
+        | Usecase | Free Tier of GCP | Post Free Tier and after exhausting free credits from GCP |
+        | --- | --- | --- |
+        | CMS without installing Rowy Run for workflow automations | Free upto 1GB of stored data, see GCP’s free quota tier pricing | On average, $0.1/GB/ month based on the region. See calculation for cost by region for storage/read/write |
+        | Workflows and automations with cloud functions by deploying Rowy Run | Free upto 2M invocations/month. Free upto 120 build minutes per day.  | Invocations: $0.04/million. Building: $0.003/min |
+
+## Rowy Pro - Paid (First month free)
+
+Rowy Pro is paid and you can see the full details of the pricing [here](https://rowy.io/pricing)
+
+### **Pro features**
+
+- Multiple Firebase projects
+- CMS with advanced filtering, sorting and full-text search
+- Code sandbox and testing environment for cloud functions, derivatives and extensions
+- Move/clone data tables from one project to another
+- View data in Table and Gallery modes
+- Embeddable tables and sharable URLs
+- Custom support
+
