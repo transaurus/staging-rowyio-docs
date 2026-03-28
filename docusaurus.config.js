@@ -6,11 +6,15 @@ const darkCodeTheme = require("prism-react-renderer/themes/okaidia");
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (
   module.exports = {
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "zh-Hans"],
+  },
     title: "Rowy Docs",
     tagline: "Open source and extendable spreadsheet for your database",
     url: "https://docs.rowy.io",
     baseUrl: "/",
-    onBrokenLinks: "throw",
+    onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.svg",
     organizationName: "rowyio", // Usually your GitHub org/user name.

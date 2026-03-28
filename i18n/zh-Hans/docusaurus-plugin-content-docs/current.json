@@ -1,0 +1,90 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.someSidebar.category.Getting started": {
+    "message": "Getting started",
+    "description": "The label for category Getting started in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.How to guide": {
+    "message": "How to guide",
+    "description": "The label for category How to guide in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.FAQs": {
+    "message": "FAQs",
+    "description": "The label for category FAQs in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Troubleshooting": {
+    "message": "Troubleshooting",
+    "description": "The label for category Troubleshooting in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Learning and Resources": {
+    "message": "Learning and Resources",
+    "description": "The label for category Learning and Resources in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Tutorials": {
+    "message": "Tutorials",
+    "description": "The label for category Tutorials in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Bots": {
+    "message": "Bots",
+    "description": "The label for category Bots in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Database": {
+    "message": "Database",
+    "description": "The label for category Database in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Field Types": {
+    "message": "Field Types",
+    "description": "The label for category Field Types in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Array Fields": {
+    "message": "Array Fields",
+    "description": "The label for category Array Fields in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Import / Export Data": {
+    "message": "Import / Export Data",
+    "description": "The label for category Import / Export Data in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.API Reference": {
+    "message": "API Reference",
+    "description": "The label for category API Reference in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Workflows": {
+    "message": "Workflows",
+    "description": "The label for category Workflows in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Extensions": {
+    "message": "Extensions",
+    "description": "The label for category Extensions in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Webhooks": {
+    "message": "Webhooks",
+    "description": "The label for category Webhooks in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Integrations": {
+    "message": "Integrations",
+    "description": "The label for category Integrations in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.FlutterFlow": {
+    "message": "FlutterFlow",
+    "description": "The label for category FlutterFlow in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Community": {
+    "message": "Community",
+    "description": "The label for category Community in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.category.Contributing": {
+    "message": "Contributing",
+    "description": "The label for category Contributing in sidebar someSidebar"
+  },
+  "sidebar.someSidebar.link.Changelog": {
+    "message": "Changelog",
+    "description": "The label for link Changelog in sidebar someSidebar, linking to https://www.rowy.io/changelog"
+  },
+  "sidebar.someSidebar.link.Events": {
+    "message": "Events",
+    "description": "The label for link Events in sidebar someSidebar, linking to https://www.rowy.io/events"
+  }
+}
